@@ -1,0 +1,15 @@
+{
+  "name": "radio-look",
+  "version": "0.0.0",
+  "description": "RadioLook",
+  "main": "index.js",
+  "author": {
+    "name": ""
+  },
+  "dependencies": {
+    "better-sqlite3": "^6.0.1",
+    "express": "^4.17.1",
+    "jsdom": "^16.1.0",
+    "serve-favicon": "^2.5.0"
+  }
+}

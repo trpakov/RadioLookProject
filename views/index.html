@@ -1,0 +1,110 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>RadioLook - Начало</title>
+  </head>
+  
+  <body>
+  
+			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+		  <a class="navbar-brand" href="/"><img src="/logo.png" width="30" height="30" class="d-inline-block align-top" alt=""> RadioLook</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+
+		  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+			<ul class="navbar-nav mr-auto">
+			  <li class="nav-item active">
+				<a class="nav-link" href="/">Начало<span class="sr-only">(current)</span></a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="/radios">Списък</a>
+			  </li>
+			  <li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Радиа</a>
+				<div id="radios-dropdown" class="dropdown-menu" aria-labelledby="dropdown01">
+				</div>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="/feedback">Контакт</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="/about">Относно</a>
+			  </li>
+			</ul>
+
+		  </div>
+		</nav>
+  
+	<main role="main" class="container">	
+		
+		<div class="jumbotron jumbotron-fluid">
+			<div class="container">
+				<h1 class="display-4">RadioLook - Виж това, което слушаш</h1>
+				<p class="lead">Информация за българските радиа и парчетата, които пускат</p>
+			</div>
+		</div>
+		
+
+		<div class="row">
+			<div class="col-md">
+				<div id="db-card" class="card text-white mb-3 bg-success">
+				  <div class="card-header">База данни</div>
+				  <div class="card-body">
+					<h5 id="db-card-title" class="card-title">Състояние: ДОСТЪПНА</h5>
+					<p class="card-text">Последен достъп: <span id="db-access-time">2020-4-1 19:43:08</span></p>
+				  </div>
+				</div>
+			</div>
+			<div class="col-md">
+				<div id="icecast-card" class="card text-white mb-3 bg-success">
+				  <div class="card-header">Icecast Server</div>
+				  <div class="card-body">
+					<h5 id="icecast-card-title" class="card-title">Състояние: ОНЛАЙН</h5>
+					<p class="card-text">Последен достъп: <span id="icecast-access-time">2020-4-1 19:43:09</span></p>
+				  </div>
+				</div>
+			</div>
+			<div class="col-md">
+				<div id="metacast-card" class="card text-white mb-3 bg-success">
+				  <div class="card-header">Metadata Server</div>
+				  <div class="card-body">
+					<h5 id="metacast-card-title" class="card-title">Състояние: ОНЛАЙН</h5>
+					<p class="card-text">Последен достъп: <span id="metacast-access-time">2020-4-1 19:43:08</span></p>
+				  </div>
+				</div>
+			</div>
+		</div>
+	</main>
+	  
+<!-- 	<footer class="footer">
+      <div class="container">
+        <span class="text-muted">trpakov | © 2020</span>
+      </div>
+    </footer> -->
+	
+	<footer class="page-footer font-small bg-dark fixed-bottom">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center text-light py-2 text-monospace font-weight-bold">© 2020 |
+    <a href="#" target="_blank" class="text-light">trpakov</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+	
+	
+	
+	
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  
+</body></html>

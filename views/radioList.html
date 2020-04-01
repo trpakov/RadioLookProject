@@ -1,0 +1,316 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <title>RadioLook - Относно</title>
+  </head>
+  
+  <body>
+			<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+		  <a class="navbar-brand" href="/"><img src="/logo.png" width="30" height="30" class="d-inline-block align-top" alt=""> RadioLook</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+
+		  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+			<ul class="navbar-nav mr-auto">
+			  <li class="nav-item">
+				<a class="nav-link" href="/">Начало</a>
+			  </li>
+			  <li class="nav-item active">
+				<a class="nav-link" href="/radios">Списък<span class="sr-only">(current)</span></a>
+			  </li>
+			  <li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Радиа</a>
+				<div id="radios-dropdown" class="dropdown-menu" aria-labelledby="dropdown01">
+				</div>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="/feedback">Контакт</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="/about">Относно</a>
+			  </li>
+			</ul>
+
+		  </div>
+		</nav>
+	
+	<main role="main" class="container">	
+	
+		<div class="modal fade" id="dbErrorModal" tabindex="-1" role="dialog">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">ГРЕШКА</h5>
+				
+			  </div>
+			  <div class="modal-body">
+				<p>Неуспешна връзка с базата данни. Моля опитайте отново.</p>
+			  </div>
+			  <div class="modal-footer">
+				<!-- <button type="button" class="btn btn-primary">ОБНОВИ</button> -->
+				<a class="btn btn-primary" href="/radios">ОБНОВИ</a>
+			  </div>
+			</div>
+		  </div>
+		</div>
+
+		 <!-- <button data-target="#dbErrorModal" data-toggle="modal" data-backdrop="static" data-keyboard="false"> -->
+			<!-- Launch demo modal -->
+		 <!-- </button>` -->
+		 
+		 
+		 
+		 <table class="table table-responsive-md table-striped table-bordered">
+			<thead class="thead-dark">
+				<tr>
+					<th>Радио</th>
+					<th>Име</th>
+					<th>Текущи слушатели</th>
+					<th>Пикови слушатели</th>
+					<th>Жанр</th>
+					<th>Текуща песен</th>
+					<th>Външен плейър</th>				
+				</tr>
+			</thead>
+		 
+			<tbody><tr>
+			<td><a class="link" href="https://avtoradio.bg/" target="_blank"><img class="image-fluid image-thumbnail logo" src="/avtoradio.png" width="100px"></a></td>
+			<td><span class="name">Авторадио</span></td>
+			<td><span class="currentListeners">3</span></td>
+			<td><span class="peakListeners">39</span></td>
+			<td><span class="genre">Pop</span></td>
+			<td style="white-space:nowrap;"><span class="currentSong">Topic - Breaking Me</span><a class="popupElement" href="#" onclick="return false;" tabindex="-1" data-toggle="popover" data-html="true" data-content="<p>
+	<a class=&quot;google-link&quot; href=&quot;https://www.google.com/search?q=Topic+-+Breaking+Me&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-google&quot; aria-hidden=&quot;true&quot;></i> Google</a>
+</p>
+<p>
+	<a class=&quot;youtube-link1&quot; href=&quot;https://www.youtube.com/results?search_query=Topic+-+Breaking+Me&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-youtube-play&quot; aria-hidden=&quot;true&quot;></i> Youtube</a>
+</p>
+<p>
+	<a class=&quot;genius-link&quot; href=&quot;https://genius.com/search?q=Topic+-+Breaking+Me&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-font&quot; aria-hidden=&quot;true&quot;></i> Lyrics</a>
+</p>
+<p>
+	<a class=&quot;spotify-link&quot; href=&quot;https://play.spotify.com/search/Topic - Breaking Me&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-spotify&quot; aria-hidden=&quot;true&quot;></i> Spotify</a>
+</p>"> <i title="Търсене..." class="fa fa-search" aria-hidden="true"></i></a></td>
+			<td><a class="externalPlayer" href="http://stream.radioreklama.bg/avtoradio.aac.m3u"><i class="fa fa-download fa-lg" aria-hidden="true"></i></a></td>
+		</tr><tr>
+			<td><a class="link" href="https://www.bgradio.bg" target="_blank"><img class="image-fluid image-thumbnail logo" src="/bgradio.png" width="100px"></a></td>
+			<td><span class="name">БГ Радио</span></td>
+			<td><span class="currentListeners">56</span></td>
+			<td><span class="peakListeners">126</span></td>
+			<td><span class="genre">BG Pop Music</span></td>
+			<td style="white-space:nowrap;"><span class="currentSong">ОСТАВА - ОКЕАН</span><a class="popupElement" href="#" onclick="return false;" tabindex="-1" data-toggle="popover" data-html="true" data-content="<p>
+	<a class=&quot;google-link&quot; href=&quot;https://www.google.com/search?q=ОСТАВА+-+ОКЕАН&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-google&quot; aria-hidden=&quot;true&quot;></i> Google</a>
+</p>
+<p>
+	<a class=&quot;youtube-link1&quot; href=&quot;https://www.youtube.com/results?search_query=ОСТАВА+-+ОКЕАН&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-youtube-play&quot; aria-hidden=&quot;true&quot;></i> Youtube</a>
+</p>
+<p>
+	<a class=&quot;genius-link&quot; href=&quot;https://genius.com/search?q=ОСТАВА+-+ОКЕАН&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-font&quot; aria-hidden=&quot;true&quot;></i> Lyrics</a>
+</p>
+<p>
+	<a class=&quot;spotify-link&quot; href=&quot;https://play.spotify.com/search/ОСТАВА - ОКЕАН&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-spotify&quot; aria-hidden=&quot;true&quot;></i> Spotify</a>
+</p>"> <i title="Търсене..." class="fa fa-search" aria-hidden="true"></i></a></td>
+			<td><a class="externalPlayer" href="http://stream.radioreklama.bg/bgradio.aac.m3u"><i class="fa fa-download fa-lg" aria-hidden="true"></i></a></td>
+		</tr><tr>
+			<td><a class="link" href="https://nova.bg/radio" target="_blank"><img class="image-fluid image-thumbnail logo" src="/novanews.png" width="100px"></a></td>
+			<td><span class="name">Нова Нюз</span></td>
+			<td><span class="currentListeners">146</span></td>
+			<td><span class="peakListeners">381</span></td>
+			<td><span class="genre">Various</span></td>
+			<td style="white-space:nowrap;"><span class="currentSong">Toto N  -  Chuzhdi Usmivki</span><a class="popupElement" href="#" onclick="return false;" tabindex="-1" data-toggle="popover" data-html="true" data-content="<p>
+	<a class=&quot;google-link&quot; href=&quot;https://www.google.com/search?q=Toto+N++-++Chuzhdi+Usmivki&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-google&quot; aria-hidden=&quot;true&quot;></i> Google</a>
+</p>
+<p>
+	<a class=&quot;youtube-link1&quot; href=&quot;https://www.youtube.com/results?search_query=Toto+N++-++Chuzhdi+Usmivki&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-youtube-play&quot; aria-hidden=&quot;true&quot;></i> Youtube</a>
+</p>
+<p>
+	<a class=&quot;genius-link&quot; href=&quot;https://genius.com/search?q=Toto+N++-++Chuzhdi+Usmivki&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-font&quot; aria-hidden=&quot;true&quot;></i> Lyrics</a>
+</p>
+<p>
+	<a class=&quot;spotify-link&quot; href=&quot;https://play.spotify.com/search/Toto N  -  Chuzhdi Usmivki&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-spotify&quot; aria-hidden=&quot;true&quot;></i> Spotify</a>
+</p>"> <i title="Търсене..." class="fa fa-search" aria-hidden="true"></i></a></td>
+			<td><a class="externalPlayer" href="http://stream.radioreklama.bg/novanews.aac.m3u"><i class="fa fa-download fa-lg" aria-hidden="true"></i></a></td>
+		</tr><tr>
+			<td><a class="link" href="https://radioenergy.bg/" target="_blank"><img class="image-fluid image-thumbnail logo" src="/radioenergy.png" width="100px"></a></td>
+			<td><span class="name">Радио NRJ</span></td>
+			<td><span class="currentListeners">141</span></td>
+			<td><span class="peakListeners">297</span></td>
+			<td><span class="genre">Pop Music</span></td>
+			<td style="white-space:nowrap;"><span class="currentSong">DJ BOBO FT SNAP - DON'T STOP THE MUSIC</span><a class="popupElement" href="#" onclick="return false;" tabindex="-1" data-toggle="popover" data-html="true" data-content="<p>
+	<a class=&quot;google-link&quot; href=&quot;https://www.google.com/search?q=DJ+BOBO+FT+SNAP+-+DON'T+STOP+THE+MUSIC&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-google&quot; aria-hidden=&quot;true&quot;></i> Google</a>
+</p>
+<p>
+	<a class=&quot;youtube-link1&quot; href=&quot;https://www.youtube.com/results?search_query=DJ+BOBO+FT+SNAP+-+DON'T+STOP+THE+MUSIC&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-youtube-play&quot; aria-hidden=&quot;true&quot;></i> Youtube</a>
+</p>
+<p>
+	<a class=&quot;genius-link&quot; href=&quot;https://genius.com/search?q=DJ+BOBO+FT+SNAP+-+DON'T+STOP+THE+MUSIC&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-font&quot; aria-hidden=&quot;true&quot;></i> Lyrics</a>
+</p>
+<p>
+	<a class=&quot;spotify-link&quot; href=&quot;https://play.spotify.com/search/DJ BOBO FT SNAP - DON'T STOP THE MUSIC&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-spotify&quot; aria-hidden=&quot;true&quot;></i> Spotify</a>
+</p>"> <i title="Търсене..." class="fa fa-search" aria-hidden="true"></i></a></td>
+			<td><a class="externalPlayer" href="http://stream.radioreklama.bg/nrj.aac.m3u"><i class="fa fa-download fa-lg" aria-hidden="true"></i></a></td>
+		</tr><tr>
+			<td><a class="link" href="https://www.radio1.bg/" target="_blank"><img class="image-fluid image-thumbnail logo" src="/radio1.png" width="100px"></a></td>
+			<td><span class="name">Радио 1</span></td>
+			<td><span class="currentListeners">43</span></td>
+			<td><span class="peakListeners">396</span></td>
+			<td><span class="genre">Pop Music</span></td>
+			<td style="white-space:nowrap;"><span class="currentSong">BTS / HALSEY - Boy With Luv</span><a class="popupElement" href="#" onclick="return false;" tabindex="-1" data-toggle="popover" data-html="true" data-content="<p>
+	<a class=&quot;google-link&quot; href=&quot;https://www.google.com/search?q=BTS+/+HALSEY+-+Boy+With+Luv&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-google&quot; aria-hidden=&quot;true&quot;></i> Google</a>
+</p>
+<p>
+	<a class=&quot;youtube-link1&quot; href=&quot;https://www.youtube.com/results?search_query=BTS+/+HALSEY+-+Boy+With+Luv&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-youtube-play&quot; aria-hidden=&quot;true&quot;></i> Youtube</a>
+</p>
+<p>
+	<a class=&quot;genius-link&quot; href=&quot;https://genius.com/search?q=BTS+/+HALSEY+-+Boy+With+Luv&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-font&quot; aria-hidden=&quot;true&quot;></i> Lyrics</a>
+</p>
+<p>
+	<a class=&quot;spotify-link&quot; href=&quot;https://play.spotify.com/search/BTS / HALSEY - Boy With Luv&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-spotify&quot; aria-hidden=&quot;true&quot;></i> Spotify</a>
+</p>"> <i title="Търсене..." class="fa fa-search" aria-hidden="true"></i></a></td>
+			<td><a class="externalPlayer" href="http://stream.radioreklama.bg/radio1.aac.m3u"><i class="fa fa-download fa-lg" aria-hidden="true"></i></a></td>
+		</tr><tr>
+			<td><a class="link" href="https://www.radio1rock.bg/" target="_blank"><img class="image-fluid image-thumbnail logo" src="/radio1rock.png" width="100px"></a></td>
+			<td><span class="name">Радио 1 Рок</span></td>
+			<td><span class="currentListeners">29</span></td>
+			<td><span class="peakListeners">309</span></td>
+			<td><span class="genre">Rock Music</span></td>
+			<td style="white-space:nowrap;"><span class="currentSong">METALLICA - WHISKEY IN THE JAR</span><a class="popupElement" href="#" onclick="return false;" tabindex="-1" data-toggle="popover" data-html="true" data-content="<p>
+	<a class=&quot;google-link&quot; href=&quot;https://www.google.com/search?q=METALLICA+-+WHISKEY+IN+THE+JAR&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-google&quot; aria-hidden=&quot;true&quot;></i> Google</a>
+</p>
+<p>
+	<a class=&quot;youtube-link1&quot; href=&quot;https://www.youtube.com/results?search_query=METALLICA+-+WHISKEY+IN+THE+JAR&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-youtube-play&quot; aria-hidden=&quot;true&quot;></i> Youtube</a>
+</p>
+<p>
+	<a class=&quot;genius-link&quot; href=&quot;https://genius.com/search?q=METALLICA+-+WHISKEY+IN+THE+JAR&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-font&quot; aria-hidden=&quot;true&quot;></i> Lyrics</a>
+</p>
+<p>
+	<a class=&quot;spotify-link&quot; href=&quot;https://play.spotify.com/search/METALLICA - WHISKEY IN THE JAR&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-spotify&quot; aria-hidden=&quot;true&quot;></i> Spotify</a>
+</p>"> <i title="Търсене..." class="fa fa-search" aria-hidden="true"></i></a></td>
+			<td><a class="externalPlayer" href="http://stream.radioreklama.bg/radio1rock.aac.m3u"><i class="fa fa-download fa-lg" aria-hidden="true"></i></a></td>
+		</tr><tr>
+			<td><a class="link" href="https://radioveronika.bg" target="_blank"><img class="image-fluid image-thumbnail logo" src="/radioveronika.png" width="100px"></a></td>
+			<td><span class="name">Радио Вероника</span></td>
+			<td><span class="currentListeners">57</span></td>
+			<td><span class="peakListeners">1357</span></td>
+			<td><span class="genre">Pop Music</span></td>
+			<td style="white-space:nowrap;"><span class="currentSong">TONI STORARO / ZAFEIRIS MELAS - PRIYATELI</span><a class="popupElement" href="#" onclick="return false;" tabindex="-1" data-toggle="popover" data-html="true" data-content="<p>
+	<a class=&quot;google-link&quot; href=&quot;https://www.google.com/search?q=TONI+STORARO+/+ZAFEIRIS+MELAS+-+PRIYATELI&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-google&quot; aria-hidden=&quot;true&quot;></i> Google</a>
+</p>
+<p>
+	<a class=&quot;youtube-link1&quot; href=&quot;https://www.youtube.com/results?search_query=TONI+STORARO+/+ZAFEIRIS+MELAS+-+PRIYATELI&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-youtube-play&quot; aria-hidden=&quot;true&quot;></i> Youtube</a>
+</p>
+<p>
+	<a class=&quot;genius-link&quot; href=&quot;https://genius.com/search?q=TONI+STORARO+/+ZAFEIRIS+MELAS+-+PRIYATELI&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-font&quot; aria-hidden=&quot;true&quot;></i> Lyrics</a>
+</p>
+<p>
+	<a class=&quot;spotify-link&quot; href=&quot;https://play.spotify.com/search/TONI STORARO / ZAFEIRIS MELAS - PRIYATELI&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-spotify&quot; aria-hidden=&quot;true&quot;></i> Spotify</a>
+</p>"> <i title="Търсене..." class="fa fa-search" aria-hidden="true"></i></a></td>
+			<td><a class="externalPlayer" href="http://stream.radioreklama.bg/veronika.aac.m3u"><i class="fa fa-download fa-lg" aria-hidden="true"></i></a></td>
+		</tr><tr>
+			<td><a class="link" href="https://radioenergy.bg/" target="_blank"><img class="image-fluid image-thumbnail logo" src="/nrj90s.png" width="100px"></a></td>
+			<td><span class="name">Радио NRJ 90s</span></td>
+			<td><span class="currentListeners">4</span></td>
+			<td><span class="peakListeners">75</span></td>
+			<td><span class="genre">POP</span></td>
+			<td style="white-space:nowrap;"><span class="currentSong">90's ONLY! - Radio Energy</span><a class="popupElement" href="#" onclick="return false;" tabindex="-1" data-toggle="popover" data-html="true" data-content="<p>
+	<a class=&quot;google-link&quot; href=&quot;https://www.google.com/search?q=90's+ONLY!+-+Radio+Energy&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-google&quot; aria-hidden=&quot;true&quot;></i> Google</a>
+</p>
+<p>
+	<a class=&quot;youtube-link1&quot; href=&quot;https://www.youtube.com/results?search_query=90's+ONLY!+-+Radio+Energy&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-youtube-play&quot; aria-hidden=&quot;true&quot;></i> Youtube</a>
+</p>
+<p>
+	<a class=&quot;genius-link&quot; href=&quot;https://genius.com/search?q=90's+ONLY!+-+Radio+Energy&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-font&quot; aria-hidden=&quot;true&quot;></i> Lyrics</a>
+</p>
+<p>
+	<a class=&quot;spotify-link&quot; href=&quot;https://play.spotify.com/search/90's ONLY! - Radio Energy&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-spotify&quot; aria-hidden=&quot;true&quot;></i> Spotify</a>
+</p>"> <i title="Търсене..." class="fa fa-search" aria-hidden="true"></i></a></td>
+			<td><a class="externalPlayer" href="http://stream.radioreklama.bg/energy-90s.aac.m3u"><i class="fa fa-download fa-lg" aria-hidden="true"></i></a></td>
+		</tr><tr>
+			<td><a class="link" href="https://radionova.bg" target="_blank"><img class="image-fluid image-thumbnail logo" src="/radionova.png" width="100px"></a></td>
+			<td><span class="name">Радио Nova</span></td>
+			<td><span class="currentListeners">46</span></td>
+			<td><span class="peakListeners">433</span></td>
+			<td><span class="genre">House Music</span></td>
+			<td style="white-space:nowrap;"><span class="currentSong">RADIO NOVA - 101.7 FM SOFIA</span><a class="popupElement" href="#" onclick="return false;" tabindex="-1" data-toggle="popover" data-html="true" data-content="<p>
+	<a class=&quot;google-link&quot; href=&quot;https://www.google.com/search?q=RADIO+NOVA+-+101.7+FM+SOFIA&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-google&quot; aria-hidden=&quot;true&quot;></i> Google</a>
+</p>
+<p>
+	<a class=&quot;youtube-link1&quot; href=&quot;https://www.youtube.com/results?search_query=RADIO+NOVA+-+101.7+FM+SOFIA&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-youtube-play&quot; aria-hidden=&quot;true&quot;></i> Youtube</a>
+</p>
+<p>
+	<a class=&quot;genius-link&quot; href=&quot;https://genius.com/search?q=RADIO+NOVA+-+101.7+FM+SOFIA&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-font&quot; aria-hidden=&quot;true&quot;></i> Lyrics</a>
+</p>
+<p>
+	<a class=&quot;spotify-link&quot; href=&quot;https://play.spotify.com/search/RADIO NOVA - 101.7 FM SOFIA&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-spotify&quot; aria-hidden=&quot;true&quot;></i> Spotify</a>
+</p>"> <i title="Търсене..." class="fa fa-search" aria-hidden="true"></i></a></td>
+			<td><a class="externalPlayer" href="http://stream.radioreklama.bg/nova.aac.m3u"><i class="fa fa-download fa-lg" aria-hidden="true"></i></a></td>
+		</tr><tr>
+			<td><a class="link" href="https://city.bg" target="_blank"><img class="image-fluid image-thumbnail logo" src="/radiocity.png" width="100px"></a></td>
+			<td><span class="name">Радио City</span></td>
+			<td><span class="currentListeners">75</span></td>
+			<td><span class="peakListeners">1495</span></td>
+			<td><span class="genre">Pop Music</span></td>
+			<td style="white-space:nowrap;"><span class="currentSong">BENEE ft. Gus Dapperton - Supalonely</span><a class="popupElement" href="#" onclick="return false;" tabindex="-1" data-toggle="popover" data-html="true" data-content="<p>
+	<a class=&quot;google-link&quot; href=&quot;https://www.google.com/search?q=BENEE+ft.+Gus+Dapperton+-+Supalonely&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-google&quot; aria-hidden=&quot;true&quot;></i> Google</a>
+</p>
+<p>
+	<a class=&quot;youtube-link1&quot; href=&quot;https://www.youtube.com/results?search_query=BENEE+ft.+Gus+Dapperton+-+Supalonely&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-youtube-play&quot; aria-hidden=&quot;true&quot;></i> Youtube</a>
+</p>
+<p>
+	<a class=&quot;genius-link&quot; href=&quot;https://genius.com/search?q=BENEE+ft.+Gus+Dapperton+-+Supalonely&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-font&quot; aria-hidden=&quot;true&quot;></i> Lyrics</a>
+</p>
+<p>
+	<a class=&quot;spotify-link&quot; href=&quot;https://play.spotify.com/search/BENEE ft. Gus Dapperton - Supalonely&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-spotify&quot; aria-hidden=&quot;true&quot;></i> Spotify</a>
+</p>"> <i title="Търсене..." class="fa fa-search" aria-hidden="true"></i></a></td>
+			<td><a class="externalPlayer" href="http://stream.radioreklama.bg/city.aac.m3u"><i class="fa fa-download fa-lg" aria-hidden="true"></i></a></td>
+		</tr><tr>
+			<td><a class="link" href="https://www.bgradio.bg" target="_blank"><img class="image-fluid image-thumbnail logo" src="/bgestrada.png" width="100px"></a></td>
+			<td><span class="name">Радио БГ Естрада</span></td>
+			<td><span class="currentListeners">1</span></td>
+			<td><span class="peakListeners">18</span></td>
+			<td><span class="genre">BG POP</span></td>
+			<td style="white-space:nowrap;"><span class="currentSong">КАМЕН ВОДЕНИЧАРОВ - ТИХО Е</span><a class="popupElement" href="#" onclick="return false;" tabindex="-1" data-toggle="popover" data-html="true" data-content="<p>
+	<a class=&quot;google-link&quot; href=&quot;https://www.google.com/search?q=КАМЕН+ВОДЕНИЧАРОВ+-+ТИХО+Е&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-google&quot; aria-hidden=&quot;true&quot;></i> Google</a>
+</p>
+<p>
+	<a class=&quot;youtube-link1&quot; href=&quot;https://www.youtube.com/results?search_query=КАМЕН+ВОДЕНИЧАРОВ+-+ТИХО+Е&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-youtube-play&quot; aria-hidden=&quot;true&quot;></i> Youtube</a>
+</p>
+<p>
+	<a class=&quot;genius-link&quot; href=&quot;https://genius.com/search?q=КАМЕН+ВОДЕНИЧАРОВ+-+ТИХО+Е&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-font&quot; aria-hidden=&quot;true&quot;></i> Lyrics</a>
+</p>
+<p>
+	<a class=&quot;spotify-link&quot; href=&quot;https://play.spotify.com/search/КАМЕН ВОДЕНИЧАРОВ - ТИХО Е&quot; target=&quot;_blank&quot;><i class=&quot;fa fa-spotify&quot; aria-hidden=&quot;true&quot;></i> Spotify</a>
+</p>"> <i title="Търсене..." class="fa fa-search" aria-hidden="true"></i></a></td>
+			<td><a class="externalPlayer" href="http://stream.radioreklama.bg/bgestrada.aac.m3u"><i class="fa fa-download fa-lg" aria-hidden="true"></i></a></td>
+		</tr></tbody>
+		</table>
+	
+	</main>
+	  
+	
+	<footer class="page-footer font-small bg-dark">
+		<div class="footer-copyright text-center text-light py-2 text-monospace font-weight-bold">© 2020 |
+			<a href="#" target="_blank" class="text-light">trpakov</a>
+		</div>
+	</footer>
+	
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	<script>
+	
+		window.addEventListener('load', (event) => {
+			if(false) $('#dbErrorModal').modal({backdrop: 'static', keyboard: false});
+		});
+	</script>
+  
+<script id="popoverScript">$(".popupElement").each(function() { var $this = $(this); $this.popover({ trigger: "focus"}) });</script></body></html>
