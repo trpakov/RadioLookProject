@@ -7,7 +7,7 @@ const GOOGLE_SEARCH_URL = 'https://www.google.com/search?q=';
 const GENIUS_LYRICS_SEARCH_URL = 'https://genius.com/search?q=';
 const SPOTIFY_SEARCH_URL = 'https://play.spotify.com/search/';
 
-function constructHTML(fileName) {
+function constructHTML(fileName, regExRadioNameCapture) {
 
 	switch (fileName) {
 		case '/index.html':
@@ -15,6 +15,9 @@ function constructHTML(fileName) {
 			break;
 		case '/radioList.html':
 			constructRadiosPage(fileName);
+			break;
+		case '/radioPage.html':
+			constructConcreteRadioPage(fileName, regExRadioNameCapture);
 			break;
 	}
 }
@@ -25,6 +28,7 @@ function constructIndexPage(fileName) {
 	var file = fs.readFileSync('views' + fileName);
 
 	var dom = new jsdom.JSDOM(file);
+	addRadiosToNavbar(dom);
 
 	var accessTimes = dataHandler.getAccessTimes();
 	var availability = dataHandler.getAvailability();
@@ -57,6 +61,7 @@ function constructRadiosPage(fileName) {
 	var searchPopoverContent = fs.readFileSync('views/searchPopoverContent.html', 'utf8');
 	var radios = fs.readFileSync('views/radioList.html', 'utf8');
 	var dom = new jsdom.JSDOM(radios);
+	addRadiosToNavbar(dom);
 
 	var table = dom.window.document.querySelector('tbody');
 	table.innerHTML = '';
@@ -126,5 +131,54 @@ function constructRadiosPage(fileName) {
 	popoverScript.innerHTML = '$(".popupElement").each(function() { var $this = $(this); $this.popover({ trigger: "focus"}) });';
 	dom.window.document.body.appendChild(popoverScript);
 }
+
+function constructConcreteRadioPage(fileName, regExRadioNameCapture) {
+
+	var file = fs.readFileSync('views' + fileName, 'utf8');
+	var dom = new jsdom.JSDOM(file);
+	var radioList = dataHandler.getRadioNames();
+	addRadiosToNavbar(dom);
+
+	var title = dom.window.document.querySelector('title');
+	var currentRadio = radioList.find(x => x['token'] == regExRadioNameCapture);
+	title.textContent = currentRadio['stream_title_bg'] + ' - RadioLook';
+	var links = dom.window.document.getElementsByClassName('dropdown-item');
+
+	for (let link of links) {
+		if (link.textContent != currentRadio['stream_title_bg']) link.className = 'dropdown-item';
+		else link.className = 'dropdown-item active';
+	}
+
+	var radioCard = dom.window.document.getElementById('radio-card');
+	dom.window.document.getElementById('title').textContent = currentRadio['stream_title_bg'];
+	radioCard.getElementsByClassName('logo')[0].setAttribute('src', '/' + currentRadio['token'] + '.png');
+
+
+
+
+
+
+	fs.writeFileSync('views' + fileName, dom.serialize());
+}
+
+function addRadiosToNavbar(dom) {
+
+	var dropdown = dom.window.document.getElementById('radios-dropdown');
+	var radioNames = dataHandler.getRadioNames();
+	dropdown.innerHTML = '';
+
+	radioNames.forEach(x => {
+		var link = dom.window.document.createElement('a');
+		link.setAttribute('class', 'dropdown-item');
+		link.setAttribute('href', '/radio/' + x['token']);
+		link.textContent = x['stream_title_bg'];
+		dropdown.appendChild(link);
+		dropdown.innerHTML += '\n';
+
+	});
+
+}
+
+
 
 exports.constructHTML = constructHTML;

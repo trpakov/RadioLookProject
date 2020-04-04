@@ -1,0 +1,24 @@
+#search a {
+	color: white;
+	font-size: 120%;
+}
+
+.fa-google {
+	color: blue;
+}
+
+.fa-youtube-play {
+	color: red;
+}
+
+.fa-font {
+	color: black;
+}
+
+.fa-spotify {
+	color: green;
+}
+
+#radio-card {
+	background-color: #6aadce !important;
+}

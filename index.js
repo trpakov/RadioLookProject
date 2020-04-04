@@ -35,6 +35,25 @@ app.get('/radios', function (req, res) {
 	res.sendFile(path + 'radioList.html');
 });
 
+app.get(new RegExp('^/radio/(.+)$'), function (req, res) {
+
+	var radioNames = dataHandler.getRadioNames();
+	var pageName = req.params['0'];
+	var validURL = false;
+
+	if (pageName.slice(-1) == '/') pageName = pageName.slice(0, -1);
+
+	radioNames.forEach(x => { if (x['token'] == pageName) validURL = true; });
+
+	if (!validURL) { //radioNames.indexOf(pageName) == -1
+		res.send('Error 404: Not Found!');
+		return;
+	}
+
+	htmlConstructor.constructHTML('/radioPage.html', pageName);
+	res.sendFile(path + 'radioPage.html');
+});
+
 app.use('*', function (req, res) {
 	res.send('Error 404: Not Found!');
 });
