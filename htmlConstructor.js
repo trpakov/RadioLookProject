@@ -123,25 +123,34 @@ function constructRadiosPage(fileName) {
 	//	fs.writeFileSync('views/radioList.html', dom.serialize());
 	//	});
 
-	fs.writeFileSync('views/radioList.html', dom.serialize());
-
 	dom.window.document.getElementById('popoverScript').remove();
 	var popoverScript = dom.window.document.createElement('script');
 	popoverScript.setAttribute('id', 'popoverScript');
 	popoverScript.innerHTML = '$(".popupElement").each(function() { var $this = $(this); $this.popover({ trigger: "focus"}) });';
 	dom.window.document.body.appendChild(popoverScript);
+
+	fs.writeFileSync('views/radioList.html', dom.serialize());
 }
 
+// Function to construct individual radio page
 function constructConcreteRadioPage(fileName, regExRadioNameCapture) {
 
+	// Get HTML page, convert it to DOM object
 	var file = fs.readFileSync('views' + fileName, 'utf8');
 	var dom = new jsdom.JSDOM(file);
+
+	// Get current radios information
 	var radioList = dataHandler.getRadioNames();
+
+	// Add the list of currently available radios in the navbar dropdown
 	addRadiosToNavbar(dom);
 
+	// Change the title of the page
 	var title = dom.window.document.querySelector('title');
 	var currentRadio = radioList.find(x => x['token'] == regExRadioNameCapture);
 	title.textContent = currentRadio['stream_title_bg'] + ' - RadioLook';
+
+	// Make the current radio link active in the navbar dropdown
 	var links = dom.window.document.getElementsByClassName('dropdown-item');
 
 	for (let link of links) {
@@ -149,15 +158,97 @@ function constructConcreteRadioPage(fileName, regExRadioNameCapture) {
 		else link.className = 'dropdown-item active';
 	}
 
+	// Set current radio name and logo in main card
 	var radioCard = dom.window.document.getElementById('radio-card');
 	dom.window.document.getElementById('title').textContent = currentRadio['stream_title_bg'];
 	radioCard.getElementsByClassName('logo')[0].setAttribute('src', '/' + currentRadio['token'] + '.png');
 
+	// Muses RadioPlayer Code
+	var radioPlayerHTML = fs.readFileSync('views' + '\\radioPlayer.html', 'utf8');
+	var radioPlayerDOM = new jsdom.JSDOM(radioPlayerHTML);
 
+	// RegEx helper function
+	function replacer(match, p1, p2, p3, offset, string) {
 
+		if (match == p1) return currentRadio['stream_url'].match(/(?<=reklama\.bg\/)(.+)(?=\.aac)/)[0];
+		else return currentRadio['stream_title_bg'];
+	}
 
+	// Set current radio online stream and cyrillic name in player
+	radioPlayerDOM.window.document.getElementById('radioplayer-script').textContent = radioPlayerDOM.window.document.getElementById('radioplayer-script').textContent.replace(/(?<=reklama\.bg\/)(.+)(?=\.aac)|(?<='title':')(.+)(?=',)/g, replacer)
+	dom.window.document.getElementById('radioplayer-box').innerHTML = radioPlayerDOM.window.document.body.innerHTML;
 
+	// Import external website search html file
+	var searchPopoverContent = fs.readFileSync('views/searchPopoverContent.html', 'utf8');
 
+	// Get Songs table layout from html file
+	var rowLayout = fs.readFileSync('views/songlistTableLayout.html', 'utf8');
+
+	// Delete the contents of previous table
+	var table = dom.window.document.querySelector('tbody');
+	table.innerHTML = '';
+
+	// Make database query from table with songs, get the last 11 songs played on the current radio
+	var db = dataHandler.getDataBase();
+	var statement = db.prepare('select * from song_list where token == ? order by timestamp desc limit 11');
+	var rows = statement.all(currentRadio['token']);
+
+	// Do this for every extracted element from the songs_list table (the las 11 songs from the radio)
+	rows.forEach((row, index) => {
+
+		// If this is the last entry (currently playing song)
+		if (index == 0) {
+			// Add song name, singer name and cover to the main card
+			dom.window.document.getElementsByClassName('artwork')[0].setAttribute('src', row['image'] == null ? '../cover.jpg' : row['image']);
+			dom.window.document.getElementById('artist').innerHTML = 'ИЗПЪЛНИТЕЛ/И:<br>' + row['artist'];
+			dom.window.document.getElementById('song').innerHTML = 'ПЕСЕН:<br>' + row['title'];
+
+			// Modify the links to external sites using the current song
+			var searchPopoverContentDOM = new jsdom.JSDOM(searchPopoverContent);
+			searchPopoverContentDOM.window.document.getElementsByClassName('youtube-link1')[0].setAttribute('href', YT_SEARCH_URL + row['artist'] + '+' + row['title']);
+			searchPopoverContentDOM.window.document.getElementsByClassName('google-link')[0].setAttribute('href', GOOGLE_SEARCH_URL + row['artist'] + '+' + row['title']);
+			searchPopoverContentDOM.window.document.getElementsByClassName('genius-link')[0].setAttribute('href', GENIUS_LYRICS_SEARCH_URL + row['artist'] + '+' + row['title']);
+			searchPopoverContentDOM.window.document.getElementsByClassName('spotify-link')[0].setAttribute('href', SPOTIFY_SEARCH_URL + row['artist'] + ' ' + row['title']);
+
+			dom.window.document.getElementById('search').innerHTML = searchPopoverContentDOM.serialize();
+
+		}
+		// Otherwise the song will be added as a row in the last songs table
+		else {
+			var currentRow = new jsdom.JSDOM(rowLayout).window.document.querySelector('tr');
+
+			// Insert scraping time, song and artist name, cover
+			currentRow.getElementsByClassName('date')[0].textContent = new Date(parseInt(row['timestamp'])).toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit' });
+			currentRow.getElementsByClassName('cover-art')[0].setAttribute('src', row['image'] == null ? '../cover.jpg' : row['image']);
+			currentRow.getElementsByClassName('artist')[0].textContent = row['artist'];
+			currentRow.getElementsByClassName('song')[0].textContent = row['title'];
+
+			// Modify the links to external sites using the current song
+			var searchPopoverContentDOM = new jsdom.JSDOM(searchPopoverContent);
+			searchPopoverContentDOM.window.document.getElementsByClassName('youtube-link1')[0].setAttribute('href', YT_SEARCH_URL + row['artist'] + '+' + row['title']);
+			searchPopoverContentDOM.window.document.getElementsByClassName('google-link')[0].setAttribute('href', GOOGLE_SEARCH_URL + row['artist'] + '+' + row['title']);
+			searchPopoverContentDOM.window.document.getElementsByClassName('genius-link')[0].setAttribute('href', GENIUS_LYRICS_SEARCH_URL + row['artist'] + '+' + row['title']);
+			searchPopoverContentDOM.window.document.getElementsByClassName('spotify-link')[0].setAttribute('href', SPOTIFY_SEARCH_URL + row['artist'] + ' ' + row['title']);
+
+			// Add the constructed html to the popUp element data-content atribute (Bootstrap)
+			currentRow.getElementsByClassName('popupElement')[0].setAttribute('data-content', searchPopoverContentDOM.window.document.body.innerHTML);
+
+			// Append current row to the table
+			table.appendChild(currentRow);
+		}
+
+	});
+
+	// Re-add front-end code that enables the Bootstrap pop-over elements
+	if(dom.window.document.contains(dom.window.document.getElementById('popoverScript')))
+		dom.window.document.getElementById('popoverScript').remove();
+
+	var popoverScript = dom.window.document.createElement('script');
+	popoverScript.setAttribute('id', 'popoverScript');
+	popoverScript.innerHTML = '$(".popupElement").each(function() { var $this = $(this); $this.popover({ trigger: "focus"}) });';
+	dom.window.document.body.appendChild(popoverScript);
+
+	// Save the modified file, that is ready to be served
 	fs.writeFileSync('views' + fileName, dom.serialize());
 }
 
