@@ -36,6 +36,7 @@ function submitHandler (e) {
 	for (var i = 0; i < formArray.length; i++){
 		returnArray[formArray[i]['name']] = formArray[i]['value'];
 	}
+	returnArray['timestamp'] = new Date().valueOf();
 
 	$.ajax({
 	url: '',
@@ -43,8 +44,8 @@ function submitHandler (e) {
 	data: JSON.stringify(returnArray),
 	contentType:"application/json; charset=utf-8"
 	}).done(function()  {
-    //alert("Success.");
+		$('#feedbackSuccessModal').modal({backdrop: 'static', keyboard: false});
 }).fail(function()  {
-    //alert("Failure.");
+		$('#feedbackErrorModal').modal({backdrop: 'static', keyboard: false});
 }); 
 }

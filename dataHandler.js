@@ -14,6 +14,24 @@ const availability = { 'db': true, 'icecast': true, 'metacast': true };
 const radioNames = [];
 dbOpenCallback();
 
+// Module for email sending
+var nodemailer = require('nodemailer');
+var mailInfo;
+try { mailInfo = require('./secrets'); }
+catch { console.log('Auth file not found, email sending is disabled') }
+
+var transporter = nodemailer.createTransport({
+	host: 'smtp.mail.bg',
+	port: 465,
+	secure: true,
+	auth: {
+		user: 'trpakov@mail.bg',
+		pass: mailInfo === undefined ? '' : mailInfo.emailPassword
+	},
+	tls: { rejectUnauthorized: false }
+
+});
+
 function getIcecastData() {
 
 	http.get(url, (res) => {
@@ -235,6 +253,21 @@ function getRadioNamesFromDB() {
 
 }
 
+function processFeedback(feedback) {
+
+	var statement = dataBase.prepare('insert into user_feedback(timestamp, name, email, subject, message) values($timestamp, $name, $email, $subject, $message)');
+	statement.run(feedback);
+
+	if (mailInfo === undefined) return;
+	transporter.sendMail({
+		from: '  <trpakov@mail.bg>',
+		//from: 'trpakov@mail.bg',
+		to: mailInfo.recieverEmail,
+		subject: 'RadioLook - Feedback | ' + feedback['name'] + ' | ' + feedback['email'] + ' | ' + feedback['subject'],
+		text: feedback['message']
+	});
+}
+
 function getRadioNames() {
 	return radioNames;
 }
@@ -252,3 +285,4 @@ exports.getAvailability = getAvailability;
 exports.getDataBase = getDataBase;
 exports.getRadioNames = getRadioNames;
 exports.getData = getData;
+exports.processFeedback = processFeedback;

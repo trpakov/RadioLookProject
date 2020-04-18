@@ -45,6 +45,7 @@ app.get('/feedback', function (req, res) {
 
 app.post('/feedback', jsonParser, function (req, res) {
 	console.log(req.body);
+	dataHandler.processFeedback(req.body);
 	res.send();
 
 });
