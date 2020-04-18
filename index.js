@@ -1,10 +1,12 @@
 'use strict';
 var http = require('http');
 var jsdom = require('jsdom');
+var bodyParser = require('body-parser');
 var dataHandler = require('./dataHandler');
 var htmlConstructor = require('./htmlConstructor');
 var express = require('express');
 var app = express();
+var jsonParser = bodyParser.json();
 
 var path = __dirname + '/views/';
 var favicon = require('serve-favicon');
@@ -20,6 +22,7 @@ var favicon = require('serve-favicon');
 app.use(favicon(__dirname + '/assets/favicon.ico'));
 app.use(express.static(__dirname + '/public/'));
 
+
 app.get('/', function (req, res) {
 	htmlConstructor.constructHTML('/index.html');
 	res.sendFile(path + 'index.html');
@@ -33,6 +36,17 @@ app.get('/about', function (req, res) {
 app.get('/radios', function (req, res) {
 	htmlConstructor.constructHTML('/radioList.html');
 	res.sendFile(path + 'radioList.html');
+});
+
+app.get('/feedback', function (req, res) {
+	//htmlConstructor.constructHTML('/radioList.html');
+	res.sendFile(path + 'feedback.html');
+});
+
+app.post('/feedback', jsonParser, function (req, res) {
+	console.log(req.body);
+	res.send();
+
 });
 
 app.get(new RegExp('^/radio/(.+)$'), function (req, res) {
