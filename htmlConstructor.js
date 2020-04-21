@@ -19,6 +19,12 @@ function constructHTML(fileName, regExRadioNameCapture) {
 		case '/radioPage.html':
 			constructConcreteRadioPage(fileName, regExRadioNameCapture);
 			break;
+		case '/about.html':
+			constructAboutPage(fileName);
+			break;
+		case '/feedback.html':
+			constructFeedbackPage(fileName);
+			break;
 	}
 }
 
@@ -48,7 +54,6 @@ function constructIndexPage(fileName) {
 	dom.window.document.getElementById('metacast-card').classList.add(availability['metacast'] ? 'bg-success' : 'bg-danger');
 
 	//console.log(dom.window.document.getElementById('db-access-time').textContent);
-	fs.writeFileSync('views' + fileName, dom.serialize());
 	console.log(availability);
 
 }
@@ -249,6 +254,24 @@ function constructConcreteRadioPage(fileName, regExRadioNameCapture) {
 	dom.window.document.body.appendChild(popoverScript);
 
 	// Save the modified file, that is ready to be served
+	fs.writeFileSync('views' + fileName, dom.serialize());
+}
+
+function constructAboutPage(fileName) {
+	var file = fs.readFileSync('views' + fileName);
+
+	var dom = new jsdom.JSDOM(file);
+	addRadiosToNavbar(dom);
+
+	fs.writeFileSync('views' + fileName, dom.serialize());
+}
+
+function constructFeedbackPage(fileName) {
+	var file = fs.readFileSync('views' + fileName);
+
+	var dom = new jsdom.JSDOM(file);
+	addRadiosToNavbar(dom);
+
 	fs.writeFileSync('views' + fileName, dom.serialize());
 }
 

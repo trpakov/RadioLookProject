@@ -29,7 +29,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/about', function (req, res) {
-	//htmlConstructor.constructHTML('/about.html');
+	htmlConstructor.constructHTML('/about.html');
 	res.sendFile(path + 'about.html');
 });
 
@@ -39,7 +39,7 @@ app.get('/radios', function (req, res) {
 });
 
 app.get('/feedback', function (req, res) {
-	//htmlConstructor.constructHTML('/radioList.html');
+	htmlConstructor.constructHTML('/feedback.html');
 	res.sendFile(path + 'feedback.html');
 });
 
