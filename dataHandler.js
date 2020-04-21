@@ -163,6 +163,8 @@ function persistIcecastData(rawData) {
 
 						var artist = radioData['currentSong'].split('-')[0].trim();
 						var song = radioData['currentSong'].split('-')[1].trim();
+
+						radioNames.find(x => x['token'] == 'avtoradio')['artist_song'] = artist + ' - ' + song;
 						
 						var statement = dataBase.prepare('insert into song_list(timestamp, artist, title, token) values(?, ?, ?, ?);');
 						statement.run((new Date()).valueOf(), artist, song, 'avtoradio');
@@ -206,6 +208,9 @@ function persistMetacastData(rawData, token) {
 	
 	if (radioNames.find(x => x['token'] == token) ['artist_song'] != jsonData.current_artist + ' - ' + jsonData.current_song)
 	{
+		radioNames.find(x => x['token'] == token)['artist_song'] = jsonData.current_artist + ' - ' + jsonData.current_song;
+		radioNames.find(x => x['token'] == token)['image'] = jsonData.image;
+
 		var statement = dataBase.prepare('insert into song_list(timestamp, internal_id, artist, title, image, token) values(?, ?, ?, ?, ?, ?);');
 		statement.run((new Date()).valueOf(), jsonData.id, jsonData.current_artist, jsonData.current_song, jsonData.image, token);
 		accessTimes['db-access-time'] = new Date();
@@ -216,7 +221,6 @@ function persistMetacastData(rawData, token) {
 		//		availability['db'] = true;
 		//});
 
-		radioNames.find(x => x['token'] == token)['artist_song'] = jsonData.current_artist + ' - ' + jsonData.current_song;
 	}
 
 }
@@ -268,6 +272,14 @@ function processFeedback(feedback) {
 	});
 }
 
+function updateCurrentSong(token) {
+
+	var radioToUpdate = radioNames.find(x => x['token'] == token);
+	return {
+		'artist_song': radioToUpdate['artist_song'], 'image': radioToUpdate['image'] != null ? radioToUpdate['image'] : '../cover.jpg'
+	};
+}
+
 function getRadioNames() {
 	return radioNames;
 }
@@ -286,3 +298,4 @@ exports.getDataBase = getDataBase;
 exports.getRadioNames = getRadioNames;
 exports.getData = getData;
 exports.processFeedback = processFeedback;
+exports.updateCurrentSong = updateCurrentSong;

@@ -50,6 +50,14 @@ app.post('/feedback', jsonParser, function (req, res) {
 
 });
 
+app.get(new RegExp('updateCurrentSong'), function (req, res) {
+
+	var token = req.url.match(/(?<=radio\/).+(?=\/update)/);
+	//console.log(token);
+	res.send(dataHandler.updateCurrentSong(token));
+})
+
+
 app.get(new RegExp('^/radio/(.+)$'), function (req, res) {
 
 	var radioNames = dataHandler.getRadioNames();
@@ -68,6 +76,7 @@ app.get(new RegExp('^/radio/(.+)$'), function (req, res) {
 	htmlConstructor.constructHTML('/radioPage.html', pageName);
 	res.sendFile(path + 'radioPage.html');
 });
+
 
 app.use('*', function (req, res) {
 	res.send('Error 404: Not Found!');

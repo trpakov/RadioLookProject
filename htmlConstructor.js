@@ -200,8 +200,8 @@ function constructConcreteRadioPage(fileName, regExRadioNameCapture) {
 		if (index == 0) {
 			// Add song name, singer name and cover to the main card
 			dom.window.document.getElementsByClassName('artwork')[0].setAttribute('src', row['image'] == null ? '../cover.jpg' : row['image']);
-			dom.window.document.getElementById('artist').innerHTML = 'ИЗПЪЛНИТЕЛ/И:<br>' + row['artist'];
-			dom.window.document.getElementById('song').innerHTML = 'ПЕСЕН:<br>' + row['title'];
+			dom.window.document.getElementById('artist').innerHTML = 'ИЗПЪЛНИТЕЛ/И:<br><span id="artist_name">' + row['artist'] + '</span>';
+			dom.window.document.getElementById('song').innerHTML = 'ПЕСЕН:<br><span id="song_name">' + row['title'] + '<span>';
 
 			// Modify the links to external sites using the current song
 			var searchPopoverContentDOM = new jsdom.JSDOM(searchPopoverContent);
