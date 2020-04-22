@@ -2,6 +2,7 @@ const http = require('http');
 const jsdom = require('jsdom');
 //const sqlite3 = require('sqlite3').verbose();
 const better_sqlite3 = require('better-sqlite3');
+const fs = require('fs');
 
 const url = 'http://stream.radioreklama.bg/status.xsl';
 const songURL = 'http://meta.metacast.eu/?radio=';
@@ -13,6 +14,8 @@ const accessTimes = { 'db-access-time': '', 'icecast-access-time': '', 'metacast
 const availability = { 'db': true, 'icecast': true, 'metacast': true };
 const radioNames = [];
 dbOpenCallback();
+
+const { YT_SEARCH_URL, GOOGLE_SEARCH_URL, GENIUS_LYRICS_SEARCH_URL, SPOTIFY_SEARCH_URL } = require('./htmlConstructor');
 
 // Module for email sending
 var nodemailer = require('nodemailer');
@@ -280,6 +283,48 @@ function updateCurrentSong(token) {
 	};
 }
 
+function loadMoreSongs(token, tableRows) {
+
+	// Make database query from table with songs, get the previous 10 songs played on the current radio
+	var statement = dataBase.prepare('select * from song_list where token == ? order by timestamp desc limit 10 offset ?;');
+	var rows = statement.all(token, tableRows.numberOfTableRows);
+	if (rows.length == 0) return { status: 'NO MORE DATA' };
+
+	// Get Songs table layout from html file
+	var rowLayout = fs.readFileSync('views/songlistTableLayout.html', 'utf8');
+	var rowLayoutDOM = new jsdom.JSDOM(rowLayout);
+	var currentRow = rowLayoutDOM.window.document.querySelector('tr');
+
+	// Import external website search html file
+	var searchPopoverContent = fs.readFileSync('views/searchPopoverContent.html', 'utf8');
+	var searchPopoverContentDOM = new jsdom.JSDOM(searchPopoverContent);
+
+	var newRows = '';
+
+	rows.forEach(row => {		
+
+		// Insert scraping time, song and artist name, cover
+		currentRow.getElementsByClassName('date')[0].textContent = new Date(parseInt(row['timestamp'])).toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit' });
+		currentRow.getElementsByClassName('cover-art')[0].setAttribute('src', row['image'] == null ? '../cover.jpg' : row['image']);
+		currentRow.getElementsByClassName('artist')[0].textContent = row['artist'];
+		currentRow.getElementsByClassName('song')[0].textContent = row['title'];
+
+		// Modify the links to external sites using the current song
+		searchPopoverContentDOM.window.document.getElementsByClassName('youtube-link1')[0].setAttribute('href', YT_SEARCH_URL + row['artist'] + '+' + row['title']);
+		searchPopoverContentDOM.window.document.getElementsByClassName('google-link')[0].setAttribute('href', GOOGLE_SEARCH_URL + row['artist'] + '+' + row['title']);
+		searchPopoverContentDOM.window.document.getElementsByClassName('genius-link')[0].setAttribute('href', GENIUS_LYRICS_SEARCH_URL + row['artist'] + '+' + row['title']);
+		searchPopoverContentDOM.window.document.getElementsByClassName('spotify-link')[0].setAttribute('href', SPOTIFY_SEARCH_URL + row['artist'] + ' ' + row['title']);
+
+		// Add the constructed html to the popUp element data-content atribute (Bootstrap)
+		currentRow.getElementsByClassName('popupElement')[0].setAttribute('data-content', searchPopoverContentDOM.window.document.body.innerHTML);
+
+		newRows += rowLayoutDOM.serialize();
+
+	});
+
+	return newRows;
+}
+
 function getRadioNames() {
 	return radioNames;
 }
@@ -299,3 +344,4 @@ exports.getRadioNames = getRadioNames;
 exports.getData = getData;
 exports.processFeedback = processFeedback;
 exports.updateCurrentSong = updateCurrentSong;
+exports.loadMoreSongs = loadMoreSongs;

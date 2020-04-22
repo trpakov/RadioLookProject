@@ -50,6 +50,13 @@ app.post('/feedback', jsonParser, function (req, res) {
 
 });
 
+app.post(new RegExp('loadMoreSongs'), jsonParser, function (req, res) {
+
+	var token = req.url.match(/(?<=radio\/).+(?=\/load)/);
+	res.send(dataHandler.loadMoreSongs(token, req.body));
+
+});
+
 app.get(new RegExp('updateCurrentSong'), function (req, res) {
 
 	var token = req.url.match(/(?<=radio\/).+(?=\/update)/);

@@ -245,13 +245,13 @@ function constructConcreteRadioPage(fileName, regExRadioNameCapture) {
 	});
 
 	// Re-add front-end code that enables the Bootstrap pop-over elements
-	if(dom.window.document.contains(dom.window.document.getElementById('popoverScript')))
-		dom.window.document.getElementById('popoverScript').remove();
+	//if(dom.window.document.contains(dom.window.document.getElementById('popoverScript')))
+	//	dom.window.document.getElementById('popoverScript').remove();
 
-	var popoverScript = dom.window.document.createElement('script');
-	popoverScript.setAttribute('id', 'popoverScript');
-	popoverScript.innerHTML = '$(".popupElement").each(function() { var $this = $(this); $this.popover({ trigger: "focus"}) });';
-	dom.window.document.body.appendChild(popoverScript);
+	//var popoverScript = dom.window.document.createElement('script');
+	//popoverScript.setAttribute('id', 'popoverScript');
+	//popoverScript.innerHTML = '$(".popupElement").each(function() { var $this = $(this); $this.popover({ trigger: "focus"}) });';
+	//dom.window.document.body.appendChild(popoverScript);
 
 	// Save the modified file, that is ready to be served
 	fs.writeFileSync('views' + fileName, dom.serialize());
@@ -296,3 +296,7 @@ function addRadiosToNavbar(dom) {
 
 
 exports.constructHTML = constructHTML;
+exports.YT_SEARCH_URL = YT_SEARCH_URL;
+exports.GOOGLE_SEARCH_URL = GOOGLE_SEARCH_URL;
+exports.GENIUS_LYRICS_SEARCH_URL = GENIUS_LYRICS_SEARCH_URL;
+exports.SPOTIFY_SEARCH_URL = SPOTIFY_SEARCH_URL;
