@@ -7,7 +7,15 @@ const fs = require('fs');
 const url = 'http://stream.radioreklama.bg/status.xsl';
 const songURL = 'http://meta.metacast.eu/?radio=';
 
-const dataBase = new better_sqlite3('./radio_look.db', { fileMustExist: true });
+var dataBase;
+try {
+	dataBase = new better_sqlite3('./radio_look.db', { fileMustExist: true });
+
+} catch (e) {
+	console.log('Database file "radiolook.db" not found in main directory');
+	console.log('STOPPING THE SERVER');
+	process.exit(1);
+}
 
 //const db = new sqlite3.Database('./radio_look.db', sqlite3.OPEN_READWRITE, dbOpenCallback);
 const accessTimes = { 'db-access-time': '', 'icecast-access-time': '', 'metacast-access-time': '' };
@@ -162,20 +170,22 @@ function persistIcecastData(rawData) {
 					}
 
 					if (radioData['streamTitle'] == 'Avto Radio') {
-						if (radioData['currentSong'] == 'Avto Radio - Авто Радио' || radioData['currentSong'].split('-').length < 2) continue;
+						if (radioData['currentSong'] == 'Avto Radio - Авто Радио' || radioData['currentSong'].split('-').length < 2) return;
 
 						var artist = radioData['currentSong'].split('-')[0].trim();
 						var song = radioData['currentSong'].split('-')[1].trim();
 
-						radioNames.find(x => x['token'] == 'avtoradio')['artist_song'] = artist + ' - ' + song;
+						if (radioNames.find(x => x['token'] == 'avtoradio')['artist_song'] != artist + ' - ' + song) {
+
+							radioNames.find(x => x['token'] == 'avtoradio')['artist_song'] = artist + ' - ' + song;
 						
-						var statement = dataBase.prepare('insert into song_list(timestamp, artist, title, token) values(?, ?, ?, ?);');
-						statement.run((new Date()).valueOf(), artist, song, 'avtoradio');
+							var statement = dataBase.prepare('insert into song_list(timestamp, artist, title, token) values(?, ?, ?, ?);');
+							statement.run((new Date()).valueOf(), artist, song, 'avtoradio');
+						}
 
 						//db.run('insert into song_list(timestamp, artist, title, token) values(?, ?, ?, ?);', [(new Date()).valueOf(), artist, song, 'avtoradio'], (err) => {
 						//	if (err) return console.error(err.message);
 						//});
-
 					}
 				}
 				else {

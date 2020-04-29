@@ -96,5 +96,3 @@ app.listen(3000, function () {
 
 	setInterval(dataHandler.getData, 60000);
 });
-
-

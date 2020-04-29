@@ -55,7 +55,7 @@ function constructIndexPage(fileName) {
 
 	//console.log(dom.window.document.getElementById('db-access-time').textContent);
 	console.log(availability);
-
+	fs.writeFileSync('views' + fileName, dom.serialize());
 }
 
 function constructRadiosPage(fileName) {

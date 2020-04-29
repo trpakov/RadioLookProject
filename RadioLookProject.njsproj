@@ -13,7 +13,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>925e9de2-e91f-4012-aefb-4ba6d2a9736f</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>index.js</StartupFile>
+    <StartupFile>server.js</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -36,7 +36,7 @@
     <Content Include="htmlConstructor.js">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="index.js" />
+    <Content Include="server.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
   </ItemGroup>
