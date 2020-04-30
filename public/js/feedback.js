@@ -36,7 +36,7 @@ function submitHandler (e) {
 	for (var i = 0; i < formArray.length; i++){
 		returnArray[formArray[i]['name']] = formArray[i]['value'];
 	}
-	returnArray['timestamp'] = new Date().valueOf();
+	returnArray['$timestamp'] = new Date().valueOf();
 
 	$.ajax({
 	url: '',

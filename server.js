@@ -24,23 +24,23 @@ app.use(express.static(__dirname + '/public/'));
 
 
 app.get('/', function (req, res) {
-	htmlConstructor.constructHTML('/index.html');
-	res.sendFile(path + 'index.html');
+	htmlConstructor.constructHTML('/index.html', res);
+	//res.sendFile(path + 'index.html');
 });
 
 app.get('/about', function (req, res) {
-	htmlConstructor.constructHTML('/about.html');
-	res.sendFile(path + 'about.html');
+	htmlConstructor.constructHTML('/about.html', res);
+	//res.sendFile(path + 'about.html');
 });
 
 app.get('/radios', function (req, res) {
-	htmlConstructor.constructHTML('/radioList.html');
-	res.sendFile(path + 'radioList.html');
+	htmlConstructor.constructHTML('/radioList.html', res);
+	//res.sendFile(path + 'radioList.html');
 });
 
 app.get('/feedback', function (req, res) {
-	htmlConstructor.constructHTML('/feedback.html');
-	res.sendFile(path + 'feedback.html');
+	htmlConstructor.constructHTML('/feedback.html', res);
+	//res.sendFile(path + 'feedback.html');
 });
 
 app.post('/feedback', jsonParser, function (req, res) {
@@ -50,10 +50,11 @@ app.post('/feedback', jsonParser, function (req, res) {
 
 });
 
-app.post(new RegExp('loadMoreSongs'), jsonParser, function (req, res) {
+app.post(new RegExp('loadMoreSongs'), jsonParser, async function (req, res) {
 
 	var token = req.url.match(/(?<=radio\/).+(?=\/load)/);
-	res.send(dataHandler.loadMoreSongs(token, req.body));
+	var result = await dataHandler.loadMoreSongs(token[0], req.body);
+	res.send(result);
 
 });
 
@@ -76,23 +77,23 @@ app.get(new RegExp('^/radio/(.+)$'), function (req, res) {
 	radioNames.forEach(x => { if (x['token'] == pageName) validURL = true; });
 
 	if (!validURL) { //radioNames.indexOf(pageName) == -1
-		res.send('Error 404: Not Found!');
+		res.status(404).send('Error 404: Not Found!');
 		return;
 	}
 
-	htmlConstructor.constructHTML('/radioPage.html', pageName);
-	res.sendFile(path + 'radioPage.html');
+	htmlConstructor.constructHTML('/radioPage.html', res, pageName);
+	//res.sendFile(path + 'radioPage.html');
 });
 
 
 app.use('*', function (req, res) {
-	res.send('Error 404: Not Found!');
+	res.status(404).send('Error 404: Not Found!');
 });
 
 app.listen(3000, function () {
 	console.log('RadioLook listening on port 3000');
-	dataHandler.getIcecastData();
-	dataHandler.getMetacastData();
+	//dataHandler.getIcecastData();
+	//dataHandler.getMetacastData();
 
 	setInterval(dataHandler.getData, 60000);
 });
