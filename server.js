@@ -28,6 +28,10 @@ app.get('/', function (req, res) {
 	//res.sendFile(path + 'index.html');
 });
 
+app.get('/getServiceStatus', function (req, res) {
+		dataHandler.getServiceStatus(res);
+});
+
 app.get('/about', function (req, res) {
 	htmlConstructor.constructHTML('/about.html', res);
 	//res.sendFile(path + 'about.html');

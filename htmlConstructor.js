@@ -49,9 +49,9 @@ async function constructIndexPage(fileName, response) {
 		var availability = dataHandler.getAvailability();
 		//console.log(accessTimes);
 
-		if (availability['db']) dom.window.document.getElementById('db-access-time').textContent = accessTimes['db-access-time'].toLocaleString();
-		if (availability['icecast']) dom.window.document.getElementById('icecast-access-time').textContent = accessTimes['icecast-access-time'].toLocaleString();
-		if (availability['metacast']) dom.window.document.getElementById('metacast-access-time').textContent = accessTimes['metacast-access-time'].toLocaleString();
+		if (availability['db']) dom.window.document.getElementById('db-access-time').textContent = new Date(accessTimes['db-access-time']).toLocaleString('en-GB');
+		if (availability['icecast']) dom.window.document.getElementById('icecast-access-time').textContent = new Date(accessTimes['icecast-access-time']).toLocaleString('en-GB');
+		if (availability['metacast']) dom.window.document.getElementById('metacast-access-time').textContent = new Date(accessTimes['metacast-access-time']).toLocaleString('en-GB');
 
 		dom.window.document.getElementById('db-card-title').textContent = (availability['db'] ? 'Състояние: ДОСТЪПНА' : 'Състояние: ОТКАЗАН ДОСТЪП');
 		dom.window.document.getElementById('icecast-card-title').textContent = (availability['icecast'] ? 'Състояние: ОНЛАЙН' : 'Състояние: ОФЛАЙН');
@@ -92,11 +92,11 @@ async function constructRadiosPage(fileName, response) {
 		dom = new jsdom.JSDOM(radios);
 		addRadiosToNavbar(dom);
 
-		dom.window.document.getElementById('popoverScript').remove();
-		var popoverScript = dom.window.document.createElement('script');
-		popoverScript.setAttribute('id', 'popoverScript');
-		popoverScript.innerHTML = '$(".popupElement").each(function() { var $this = $(this); $this.popover({ trigger: "focus"}) });';
-		dom.window.document.body.appendChild(popoverScript);
+		//dom.window.document.getElementById('popoverScript').remove();
+		//var popoverScript = dom.window.document.createElement('script');
+		//popoverScript.setAttribute('id', 'popoverScript');
+		//popoverScript.innerHTML = '$(".popupElement").each(function() { var $this = $(this); $this.popover({ trigger: "focus"}) });';
+		//dom.window.document.body.appendChild(popoverScript);
 
 		var table = dom.window.document.querySelector('tbody');
 		table.innerHTML = '';

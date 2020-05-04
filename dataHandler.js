@@ -369,6 +369,22 @@ function getData() {
 	getMetacastData();
 }
 
+function getServiceStatus(response) {
+
+	var isEverythingOK = true;
+
+	Object.keys(availability).forEach(x => {
+		if (!availability[x]) isEverythingOK = false;
+	});
+
+	if (isEverythingOK) {
+		response.send(Object.assign({ status: 'OK' }, availability, accessTimes));
+	}
+	else {
+		response.send(Object.assign({ status: 'ERROR' }, availability, accessTimes));
+	}
+}
+
 
 exports.getIcecastData = getIcecastData;
 exports.getMetacastData = getMetacastData;
@@ -380,3 +396,4 @@ exports.getData = getData;
 exports.processFeedback = processFeedback;
 exports.updateCurrentSong = updateCurrentSong;
 exports.loadMoreSongs = loadMoreSongs;
+exports.getServiceStatus = getServiceStatus;
