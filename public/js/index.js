@@ -4,7 +4,7 @@ var metaAccessSpan = document.querySelector('#metacast-access-time');
 
 var dbCard = document.querySelector('#db-card');
 var iceCard = document.querySelector('#icecast-card');
-var metaCard = document.querySelector('#metacasst-card');
+var metaCard = document.querySelector('#metacast-card');
 var statusCards = document.querySelectorAll('.status-card');
 
 var dbCardText = document.querySelector('#db-text-span');
@@ -45,15 +45,15 @@ function getServiceStatus(){
 		}
 		else {
 			if(!returnedData.icecast){
-				iceCard.remove('bg-success');
-				iceCard.add('bg-danger');
+				iceCard.classList.remove('bg-success');
+				iceCard.classList.add('bg-danger');
 				iceCardText.textContent = 'Последен опит за достъп: ';
 				iceCardTitle.textContent = 'Състояние: ОФЛАЙН';
 			}
 			
 			if(!returnedData.metacast){
-				metaCard.remove('bg-success');
-				metaCard.add('bg-danger');
+				metaCard.classList.remove('bg-success');
+				metaCard.classList.add('bg-danger');
 				metaCardText.textContent = 'Последен опит за достъп: ';	
 				metaCardTitle.textContent = 'Състояние: ОФЛАЙН';
 

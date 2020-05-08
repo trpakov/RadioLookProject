@@ -58,9 +58,10 @@ var transporter = nodemailer.createTransport({
 });
 
 function getIcecastData() {
+	accessTimes['icecast-access-time'] = new Date();
 
 	http.get(url, (res) => {
-
+		
 		const statusCode = res.statusCode;
 
 		let error;
@@ -87,7 +88,7 @@ function getIcecastData() {
 			} catch (e) {
 				console.error(e.message);
 			}
-			accessTimes['icecast-access-time'] = new Date();
+			availability['icecast'] = true;			
 			
 		});
 	}).on('error', e => {
@@ -149,6 +150,7 @@ async function getMetacastData() {
 					} catch (e) {
 						console.error(e.message);
 					}
+					availability['metacast'] = true;
 
 				});
 			}).on('error', e => {

@@ -49,11 +49,19 @@ async function constructIndexPage(fileName, response) {
 		var availability = dataHandler.getAvailability();
 		//console.log(accessTimes);
 
-		if (availability['db']) dom.window.document.getElementById('db-access-time').textContent = new Date(accessTimes['db-access-time']).toLocaleString('en-GB');
-		if (availability['icecast']) dom.window.document.getElementById('icecast-access-time').textContent = new Date(accessTimes['icecast-access-time']).toLocaleString('en-GB');
-		if (availability['metacast']) dom.window.document.getElementById('metacast-access-time').textContent = new Date(accessTimes['metacast-access-time']).toLocaleString('en-GB');
+		dom.window.document.getElementById('db-access-time').textContent = new Date(accessTimes['db-access-time']).toLocaleString('en-GB');
+		dom.window.document.getElementById('icecast-access-time').textContent = new Date(accessTimes['icecast-access-time']).toLocaleString('en-GB');
+		dom.window.document.getElementById('metacast-access-time').textContent = new Date(accessTimes['metacast-access-time']).toLocaleString('en-GB');
 
-		dom.window.document.getElementById('db-card-title').textContent = (availability['db'] ? 'Състояние: ДОСТЪПНА' : 'Състояние: ОТКАЗАН ДОСТЪП');
+		//if (availability['db']) dom.window.document.getElementById('db-access-time').textContent = new Date(accessTimes['db-access-time']).toLocaleString('en-GB');
+		//if (availability['icecast']) dom.window.document.getElementById('icecast-access-time').textContent = new Date(accessTimes['icecast-access-time']).toLocaleString('en-GB');
+		//if (availability['metacast']) dom.window.document.getElementById('metacast-access-time').textContent = new Date(accessTimes['metacast-access-time']).toLocaleString('en-GB');
+
+		dom.window.document.getElementById('db-text-span').textContent = (availability['db'] ? 'Последен достъп: ' : 'Последен опит за достъп: ');
+		dom.window.document.getElementById('ice-text-span').textContent = (availability['icecast'] ? 'Последен достъп: ' : 'Последен опит за достъп: ');
+		dom.window.document.getElementById('meta-text-span').textContent = (availability['metacast'] ? 'Последен достъп: ' : 'Последен опит за достъп: ');
+
+		dom.window.document.getElementById('db-card-title').textContent = (availability['db'] ? 'Състояние: ДОСТЪПНА' : 'Последен опит за достъп: ');
 		dom.window.document.getElementById('icecast-card-title').textContent = (availability['icecast'] ? 'Състояние: ОНЛАЙН' : 'Състояние: ОФЛАЙН');
 		dom.window.document.getElementById('metacast-card-title').textContent = (availability['metacast'] ? 'Състояние: ОНЛАЙН' : 'Състояние: ОФЛАЙН');
 
