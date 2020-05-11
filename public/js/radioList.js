@@ -1,6 +1,4 @@
-// window.addEventListener('load', (event) => {
-	// if(false) $('#errorModal').modal({backdrop: 'static', keyboard: false});
-// });
+var stopShowingModal = false;
 
 $(".popupElement").each(function() { 
 	var $this = $(this); 
@@ -18,8 +16,8 @@ function getServiceStatus(){
 	}).done(function(returnedData)  {
 		//console.log(returnedData);
 		var status = returnedData.status;
-		status = 'ERROR';
-		if (status == 'ERROR'){
+		//status = 'ERROR';
+		if (!stopShowingModal && status == 'ERROR'){
 			$('#errorModal').modal();
 		}
 
@@ -28,4 +26,8 @@ function getServiceStatus(){
 		});	
 }
 
-setInterval(getServiceStatus, 10000);
+setInterval(getServiceStatus, 30000);
+
+document.querySelector('#stopShowingModal').addEventListener('click', ()=>{
+	stopShowingModal = true;	
+});
