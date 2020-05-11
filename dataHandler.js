@@ -84,6 +84,7 @@ function getIcecastData() {
 
 			try {
 				//dom = new jsdom.JSDOM(rawData);
+				console.log('GETTING ICECAST DATA');
 				persistIcecastData(rawData);
 			} catch (e) {
 				console.error(e.message);

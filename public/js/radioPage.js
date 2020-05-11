@@ -1,6 +1,12 @@
 $(".popupElement").each(function() { var $this = $(this); $this.popover({ trigger: "focus"}) });
+
 var numberOfTableRows = 11;
 var tbody = document.querySelector('tbody');
+
+const YT_SEARCH_URL = 'https://www.youtube.com/results?search_query=';
+const GOOGLE_SEARCH_URL = 'https://www.google.com/search?q=';
+const GENIUS_LYRICS_SEARCH_URL = 'https://genius.com/search?q=';
+const SPOTIFY_SEARCH_URL = 'https://play.spotify.com/search/';
 
 function updateCurrentSong(){
 	
@@ -21,7 +27,12 @@ function updateCurrentSong(){
 		if(newAritst != artistSpan.textContent || newSong != songSpan.textContent){
 			artistSpan.textContent = newAritst;
 			songSpan.textContent = newSong;
-			coverImage.setAttribute('src', returnedData['image']);			
+			coverImage.setAttribute('src', returnedData['image']);
+			
+			document.querySelectorAll('.google-link')[0].href = GOOGLE_SEARCH_URL + newAritst + '+' + newSong;
+			document.querySelectorAll('.youtube-link1')[0].href = YT_SEARCH_URL + newAritst + '+' + newSong;
+			document.querySelectorAll('.genius-link')[0].href = GENIUS_LYRICS_SEARCH_URL + newAritst + '+' + newSong;
+			document.querySelectorAll('.spotify-link')[0].href = SPOTIFY_SEARCH_URL + newAritst + ' ' + newSong;			
 		}
 
 }).fail(function()  {
