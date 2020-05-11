@@ -1,5 +1,10 @@
-td.currentSongCell {
+/* td.currentSongCell {
 	 white-space:nowrap;
+} */
+
+.table td, .table th {
+	text-align: center;
+	vertical-align: middle;
 }
 
 .modal .modal-dialog {
@@ -9,7 +14,26 @@ td.currentSongCell {
     margin:0px;
 }
 
-.modal-backdrop
-{
+.modal-backdrop {
     opacity:0 !important;
+}
+
+.popupElement {
+	text-decoration: none !important;
+}
+
+.fa-google {
+	color: blue;
+}
+
+.fa-youtube-play {
+	color: red;
+}
+
+.fa-font {
+	color: black;
+}
+
+.fa-spotify {
+	color: green;
 }

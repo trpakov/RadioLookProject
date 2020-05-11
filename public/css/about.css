@@ -1,0 +1,10 @@
+#tu-logo {
+	display: block;
+	margin: auto;
+}
+
+@media screen and (max-width: 500px) {
+    #header-col {
+        text-align: center !important;
+    }
+}

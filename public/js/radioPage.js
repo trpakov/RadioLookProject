@@ -83,7 +83,7 @@ function getServiceStatus(){
 	}).done(function(returnedData)  {
 		//console.log(returnedData);
 		var status = returnedData.status;
-		status = 'ERROR';
+		//status = 'ERROR';
 		if (!stopShowingModal && status == 'ERROR'){
 			$('#errorModal').modal();
 		}
