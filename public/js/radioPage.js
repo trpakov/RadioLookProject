@@ -1,7 +1,13 @@
-$(".popupElement").each(function() { var $this = $(this); $this.popover({ trigger: "focus"}) });
+$(".popupElement").each(function() { 
+	var $this = $(this); 
+	$this.popover({ 
+		trigger: "focus"
+	});
+});
 
 var numberOfTableRows = 11;
 var tbody = document.querySelector('tbody');
+var stopShowingModal = false;
 
 const YT_SEARCH_URL = 'https://www.youtube.com/results?search_query=';
 const GOOGLE_SEARCH_URL = 'https://www.google.com/search?q=';
@@ -65,8 +71,31 @@ function loadMoreTableEntries(){
 		
 	}).fail(function()  {
 		alert('FAILURE');
-	}); 
-	
-	
+	}); 	
 }
+
+function getServiceStatus(){
+	
+	$.ajax({
+	url: '/getServiceStatus/',
+	type:'GET',
+	cache: false
+	}).done(function(returnedData)  {
+		//console.log(returnedData);
+		var status = returnedData.status;
+		status = 'ERROR';
+		if (!stopShowingModal && status == 'ERROR'){
+			$('#errorModal').modal();
+		}
+
+	}).fail(function()  {
+		console.log('FAILURE');
+		});	
+}
+
+setInterval(getServiceStatus, 30000);
+
+document.querySelector('#stopShowingModal').addEventListener('click', ()=>{
+	stopShowingModal = true;	
+});
 

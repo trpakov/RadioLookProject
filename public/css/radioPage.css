@@ -22,3 +22,15 @@
 #radio-card {
 	background-color: #6aadce !important;
 }
+
+.modal .modal-dialog {
+    position:fixed;
+    top:0px;
+    right:0px;
+    margin:0px;
+}
+
+.modal-backdrop
+{
+    opacity:0 !important;
+}
