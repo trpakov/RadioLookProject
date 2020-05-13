@@ -44,6 +44,15 @@
 	justify-content: center;
 }
 
+.table td, .table th {
+	text-align: center;
+
+}
+
+.main-text {
+	font-size: 115%;
+}
+
 
 
 
