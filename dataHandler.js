@@ -269,8 +269,8 @@ function getDataBase() { return dataBase; }
 async function getRadioNamesFromDB() {
 
 	try {
-		var rows = await dataBase.all('select token, stream_title_bg, stream_url from radio_info;');
-		rows.forEach(row => { radioNames.push({ 'token': row['token'], 'stream_title_bg': row['stream_title_bg'], 'stream_url': row['stream_url'] }); });
+		var rows = await dataBase.all('select token, stream_title_bg, stream_url, website from radio_info;');
+		rows.forEach(row => { radioNames.push({ 'token': row['token'], 'stream_title_bg': row['stream_title_bg'], 'stream_url': row['stream_url'], 'website':row['website'] }); });
 
 		console.log('Database connection - SUCCESSFUL');
 		accessTimes['db-access-time'] = new Date();

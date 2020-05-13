@@ -183,10 +183,11 @@ async function constructConcreteRadioPage(fileName, response, regExRadioNameCapt
 			else link.className = 'dropdown-item active';
 		}
 
-		// Set current radio name and logo in main card
+		// Set current radio name, logo and URL in main card
 		var radioCard = dom.window.document.getElementById('radio-card');
 		dom.window.document.getElementById('title').textContent = currentRadio['stream_title_bg'];
 		radioCard.getElementsByClassName('logo')[0].setAttribute('src', '/' + currentRadio['token'] + '.png');
+		radioCard.getElementsByClassName('radio-url')[0].setAttribute('href', currentRadio['website']);
 
 		// Muses RadioPlayer Code
 		radioPlayerHTML = await readFileAsync('views' + '\\radioPlayer.html', 'utf8');
