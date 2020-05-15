@@ -1,17 +1,23 @@
-﻿const jsdom = require('jsdom');
+﻿'use strict';
+
+// Module for using DOM inside node.js
+const jsdom = require('jsdom');
+
 const dataHandler = require('./dataHandler');
 const fs = require('fs');
 
+// Module to use async read and write to file functions with promises instead of callbacks 
 const { promisify } = require('util');
 const readFileAsync = promisify(fs.readFile);
 const writeFileAsync = promisify(fs.writeFile);
 
-
+// URLs for external searches
 const YT_SEARCH_URL = 'https://www.youtube.com/results?search_query=';
 const GOOGLE_SEARCH_URL = 'https://www.google.com/search?q=';
 const GENIUS_LYRICS_SEARCH_URL = 'https://genius.com/search?q=';
 const SPOTIFY_SEARCH_URL = 'https://play.spotify.com/search/';
 
+// Main router function
 function constructHTML(fileName, response, regExRadioNameCapture) {
 
 	switch (fileName) {
@@ -33,22 +39,24 @@ function constructHTML(fileName, response, regExRadioNameCapture) {
 	}
 }
 
-
+// Function that constructs the index page
 async function constructIndexPage(fileName, response) {
 
 	var file, dom;
 
 	try {
-
+		// Get HTML page, convert it to DOM object
 		file = await readFileAsync('views' + fileName);
 
 		dom = new jsdom.JSDOM(file);
 		addRadiosToNavbar(dom);
 
+		// Update access times
 		var accessTimes = dataHandler.getAccessTimes();
 		var availability = dataHandler.getAvailability();
 		//console.log(accessTimes);
 
+		// Update access times in DOM
 		dom.window.document.getElementById('db-access-time').textContent = new Date(accessTimes['db-access-time']).toLocaleString('en-GB');
 		dom.window.document.getElementById('icecast-access-time').textContent = new Date(accessTimes['icecast-access-time']).toLocaleString('en-GB');
 		dom.window.document.getElementById('metacast-access-time').textContent = new Date(accessTimes['metacast-access-time']).toLocaleString('en-GB');
@@ -57,6 +65,7 @@ async function constructIndexPage(fileName, response) {
 		//if (availability['icecast']) dom.window.document.getElementById('icecast-access-time').textContent = new Date(accessTimes['icecast-access-time']).toLocaleString('en-GB');
 		//if (availability['metacast']) dom.window.document.getElementById('metacast-access-time').textContent = new Date(accessTimes['metacast-access-time']).toLocaleString('en-GB');
 
+		// Update info cards depending on availability
 		dom.window.document.getElementById('db-text-span').textContent = (availability['db'] ? 'Последен достъп: ' : 'Последен опит за достъп: ');
 		dom.window.document.getElementById('ice-text-span').textContent = (availability['icecast'] ? 'Последен достъп: ' : 'Последен опит за достъп: ');
 		dom.window.document.getElementById('meta-text-span').textContent = (availability['metacast'] ? 'Последен достъп: ' : 'Последен опит за достъп: ');
@@ -71,15 +80,19 @@ async function constructIndexPage(fileName, response) {
 		dom.window.document.getElementById('metacast-card').classList.add(availability['metacast'] ? 'bg-success' : 'bg-danger');
 
 		//console.log(dom.window.document.getElementById('db-access-time').textContent);
-		console.log(availability);
+		//console.log(availability);
+
+		// Send the constructed page
 		response.send(dom.serialize());
 
 	} catch (e) {
 		console.log(e);
+		// Send error response if an error occured
 		response.status(500).send('В момента изпитваме технически затруднения, съжаляваме за причиненото неудобство.');
 	}
 
 	try {
+		// Save the edited file
 		writeFileAsync('views' + fileName, dom.serialize());
 	} catch (e) {
 		console.log('Could not save modified file');
@@ -88,10 +101,12 @@ async function constructIndexPage(fileName, response) {
 	
 }
 
+// Function to construct the radios table page
 async function constructRadiosPage(fileName, response) {
 	var radios, rowLayout, searchPopoverContent, dom;
 
 	try {
+		// Get database object, radios HTML page, table template HTML page, external search HTML page, convert them to DOM objects
 		var db = dataHandler.getDataBase();
 		radios = await readFileAsync('views' + fileName);
 		rowLayout = await readFileAsync('views/tableLayout.html', 'utf8');
@@ -100,21 +115,17 @@ async function constructRadiosPage(fileName, response) {
 		dom = new jsdom.JSDOM(radios);
 		addRadiosToNavbar(dom);
 
-		//dom.window.document.getElementById('popoverScript').remove();
-		//var popoverScript = dom.window.document.createElement('script');
-		//popoverScript.setAttribute('id', 'popoverScript');
-		//popoverScript.innerHTML = '$(".popupElement").each(function() { var $this = $(this); $this.popover({ trigger: "focus"}) });';
-		//dom.window.document.body.appendChild(popoverScript);
-
+		// Get table body and clear it
 		var table = dom.window.document.querySelector('tbody');
 		table.innerHTML = '';
 
+		// Get all rows from radio_info table
 		await db.each('select * from radio_info;', (err, row) => {
 			if (err) {
 				console.error(err.message);
 				throw err;
 			}
-			//console.log(row);
+			// Add each radio information to a new row and append it to the table
 			var currentRow = new jsdom.JSDOM(rowLayout).window.document.querySelector('tr');
 
 			currentRow.getElementsByClassName('link')[0].setAttribute('href', row['website']);
@@ -126,26 +137,29 @@ async function constructRadiosPage(fileName, response) {
 			currentRow.getElementsByClassName('currentSong')[0].textContent = row['current_song'];
 			currentRow.getElementsByClassName('externalPlayer')[0].setAttribute('href', row['stream_url']);
 
+			// Using the external search template, add links for external search engines for the current radio
 			var searchPopoverContentDOM = new jsdom.JSDOM(searchPopoverContent);
-			//console.log(searchPopoverContentDOM.window.document.body.innerHTML + '\n');
+
 			searchPopoverContentDOM.window.document.getElementsByClassName('youtube-link1')[0].setAttribute('href', YT_SEARCH_URL + row['current_song'].split(' ').join('+'));
 			searchPopoverContentDOM.window.document.getElementsByClassName('google-link')[0].setAttribute('href', GOOGLE_SEARCH_URL + row['current_song'].split(' ').join('+'));
 			searchPopoverContentDOM.window.document.getElementsByClassName('genius-link')[0].setAttribute('href', GENIUS_LYRICS_SEARCH_URL + row['current_song'].split(' ').join('+'));
-			//console.log(searchPopoverContentDOM.window.document.body.innerHTML);
+
 			currentRow.getElementsByClassName('popupElement')[0].setAttribute('data-content', searchPopoverContentDOM.window.document.body.innerHTML);
 
 			table.appendChild(currentRow);
-
 		});
 
+		// Send the constructed page
 		response.send(dom.serialize());
 
 	} catch (e) {
 		console.log(e);
+		// Send error response if an error occured
 		response.status(500).send('В момента изпитваме технически затруднения, съжаляваме за причиненото неудобство.');
 	}
 
 	try {
+		// Save the edited file
 		writeFileAsync('views/radioList.html', dom.serialize());
 	} catch (e) {
 		console.log('Could not save modified file');
@@ -189,7 +203,7 @@ async function constructConcreteRadioPage(fileName, response, regExRadioNameCapt
 		radioCard.getElementsByClassName('logo')[0].setAttribute('src', '/' + currentRadio['token'] + '.png');
 		radioCard.getElementsByClassName('radio-url')[0].setAttribute('href', currentRadio['website']);
 
-		// Muses RadioPlayer Code
+		// Load Muses RadioPlayer Code
 		radioPlayerHTML = await readFileAsync('views' + '\\radioPlayer.html', 'utf8');
 		radioPlayerDOM = new jsdom.JSDOM(radioPlayerHTML);
 
@@ -263,49 +277,48 @@ async function constructConcreteRadioPage(fileName, response, regExRadioNameCapt
 
 		});
 
+		// Send the constructed page
 		response.send(dom.serialize());
 
 	} catch (e) {
 		console.log(e);
+		// Send error response if an error occured
 		response.status(500).send('В момента изпитваме технически затруднения, съжаляваме за причиненото неудобство.');
 	}
 
 	try {
+		// Save the edited file
 		writeFileAsync('views' + fileName, dom.serialize());
 	} catch (e) {
 		console.log('Could not save modified file');
 		console.log(e);
 	}
-
-	// Re-add front-end code that enables the Bootstrap pop-over elements
-	//if(dom.window.document.contains(dom.window.document.getElementById('popoverScript')))
-	//	dom.window.document.getElementById('popoverScript').remove();
-
-	//var popoverScript = dom.window.document.createElement('script');
-	//popoverScript.setAttribute('id', 'popoverScript');
-	//popoverScript.innerHTML = '$(".popupElement").each(function() { var $this = $(this); $this.popover({ trigger: "focus"}) });';
-	//dom.window.document.body.appendChild(popoverScript);
-
-	// Save the modified file, that is ready to be served
 }
 
+// Function to construct About page
 async function constructAboutPage(fileName, response) {
 	var file;
 	var dom;
 
 	try {
-
+		// Get HTML page, convert it to DOM object
 		file = await readFileAsync('views' + fileName);
 		dom = new jsdom.JSDOM(file);
+
+		// Add the available radios to the Nav bar
 		addRadiosToNavbar(dom);
+
+		// Send the constructed page
 		response.send(dom.serialize());	
 
 	} catch (e) {
 		console.log(e);
+		// Send error response if an error occured
 		response.status(500).send('В момента изпитваме технически затруднения, съжаляваме за причиненото неудобство.');
 	}
 
 	try {
+		// Save the edited file
 		writeFileAsync('views' + fileName, dom.serialize());
 	} catch (e) {
 		console.log('Could not save modified file');
@@ -315,23 +328,30 @@ async function constructAboutPage(fileName, response) {
 
 }
 
+// Function to construct the Feedback page
 async function constructFeedbackPage(fileName, response) {
 	var file;
 	var dom;
 
 	try {
-
+		// Get HTML page, convert it to DOM object
 		file = await readFileAsync('views' + fileName);
 		dom = new jsdom.JSDOM(file);
+
+		// Add the available radios to the Nav bar
 		addRadiosToNavbar(dom);
+
+		// Send the constructed page
 		response.send(dom.serialize());	
 
 	} catch (e) {
 		console.log(e);
+		// Send error response if an error occured
 		response.status(500).send('В момента изпитваме технически затруднения, съжаляваме за причиненото неудобство.');
 	}
 
 	try {
+		// Save the edited file
 		writeFileAsync('views' + fileName, dom.serialize());
 	} catch (e) {
 		console.log('Could not save modified file');
@@ -339,12 +359,15 @@ async function constructFeedbackPage(fileName, response) {
 	}
 }
 
+// Add currently available radios to the Nav bar
 function addRadiosToNavbar(dom) {
 
+	// Get the dropdown for the radios and clear it
 	var dropdown = dom.window.document.getElementById('radios-dropdown');
 	var radioNames = dataHandler.getRadioNames();
 	dropdown.innerHTML = '';
 
+	// Add each radio
 	radioNames.forEach(x => {
 		var link = dom.window.document.createElement('a');
 		link.setAttribute('class', 'dropdown-item');
@@ -358,7 +381,7 @@ function addRadiosToNavbar(dom) {
 }
 
 
-
+// Exports (used in other files)
 exports.constructHTML = constructHTML;
 exports.YT_SEARCH_URL = YT_SEARCH_URL;
 exports.GOOGLE_SEARCH_URL = GOOGLE_SEARCH_URL;
