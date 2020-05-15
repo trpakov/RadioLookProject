@@ -57,23 +57,27 @@ const { YT_SEARCH_URL, GOOGLE_SEARCH_URL, GENIUS_LYRICS_SEARCH_URL, SPOTIFY_SEAR
 
 // Module for email sending
 var nodemailer = require('nodemailer');
+var transporter;
 var mailInfo;
 
-// Get tartget email and password
+// Get email info and seteup email sending
 try { mailInfo = require('./secrets'); }
-catch { console.log('Auth file not found, email sending is disabled') }
+catch { console.log('Auth file not found, email sending is disabled'); }
 
-var transporter = nodemailer.createTransport({
-	host: 'smtp.mail.bg',
-	port: 465,
-	secure: true,
-	auth: {
-		user: 'trpakov@mail.bg',
-		pass: mailInfo === undefined ? '' : mailInfo.emailPassword
-	},
-	tls: { rejectUnauthorized: false }
+if (mailInfo != undefined) {
 
-});
+	transporter = nodemailer.createTransport({
+		host: mailInfo['host'],
+		port: mailInfo['port'],
+		secure: mailInfo['secure'],
+		auth: {
+			user: mailInfo['senderEmail'],
+			pass: mailInfo === undefined ? '' : mailInfo.emailPassword
+		},
+		tls: { rejectUnauthorized: false }
+
+	});
+}
 
 // Function to get data from Icecast server
 function getIcecastData() {
@@ -86,7 +90,7 @@ function getIcecastData() {
 		
 		const statusCode = res.statusCode;
 
-		// Erroe handling
+		// Error handling
 		let error;
 
 		if (statusCode != 200)
@@ -109,7 +113,6 @@ function getIcecastData() {
 		res.on('end', function () {
 
 			try {
-				console.log('GETTING ICECAST DATA');
 				// When done, persist the data
 				persistIcecastData(rawData);
 			} catch (e) {
@@ -241,22 +244,27 @@ async function persistIcecastData(rawData) {
 
 			// If radio name is 'Avto Radio' persist the current song now. (Done because Avto Radio has no Metacast info)
 			if (radioData['$streamTitle'] == 'Avto Radio') {
-				if (radioData['$currentSong'] == 'Avto Radio - Авто Радио' || radioData['$currentSong'].split('-').length < 2) return;
 
-				var artist = radioData['$currentSong'].split('-')[0].trim();
-				var song = radioData['$currentSong'].split('-')[1].trim();
+				// Persist only if the title is different from 'Avto Radio - Авто Радио' and is length is >= 2
+				if (!(radioData['$currentSong'] == 'Avto Radio - Авто Радио') && radioData['$currentSong'].split('-').length >= 2){
 
-				if (radioNames.find(x => x['token'] == 'avtoradio')['artist_song'] != artist + ' - ' + song) {
+					var artist = radioData['$currentSong'].split('-')[0].trim();
+					var song = radioData['$currentSong'].split('-')[1].trim();
 
-					radioNames.find(x => x['token'] == 'avtoradio')['artist_song'] = artist + ' - ' + song;
+					if (radioNames.find(x => x['token'] == 'avtoradio')['artist_song'] != artist + ' - ' + song) {
 
-					try {
-						dataBase.run('insert into song_list(timestamp, artist, title, token) values(?, ?, ?, ?);', [(new Date()).valueOf(), artist, song, 'avtoradio']);
+						radioNames.find(x => x['token'] == 'avtoradio')['artist_song'] = artist + ' - ' + song;
+
+						try {
+							dataBase.run('insert into song_list(timestamp, artist, title, token) values(?, ?, ?, ?);', [(new Date()).valueOf(), artist, song, 'avtoradio']);
 								
-					} catch (e) {
-						console.log(e);
-					}
-				}					
+						} catch (e) {
+							console.log(e);
+						}
+					}	
+
+				}
+			
 			}
 		}
 		else {
@@ -351,7 +359,7 @@ function processFeedback(feedback) {
 	// If authentication info is available, use nodemailer module to send email to the administrator with the feedback message
 	if (mailInfo === undefined) return;
 	transporter.sendMail({
-		from: '  <trpakov@mail.bg>',
+		from: '  <' + mailInfo['senderEmail'] + '>',
 		to: mailInfo.recieverEmail,
 		subject: 'RadioLook - Feedback | ' + feedback['$name'] + ' | ' + feedback['$email'] + ' | ' + feedback['$subject'],
 		text: feedback['$message']
