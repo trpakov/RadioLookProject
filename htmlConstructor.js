@@ -57,9 +57,9 @@ async function constructIndexPage(fileName, response) {
 		//console.log(accessTimes);
 
 		// Update access times in DOM
-		dom.window.document.getElementById('db-access-time').textContent = new Date(accessTimes['db-access-time']).toLocaleString('en-GB');
-		dom.window.document.getElementById('icecast-access-time').textContent = new Date(accessTimes['icecast-access-time']).toLocaleString('en-GB');
-		dom.window.document.getElementById('metacast-access-time').textContent = new Date(accessTimes['metacast-access-time']).toLocaleString('en-GB');
+		dom.window.document.getElementById('db-access-time').textContent = new Date(accessTimes['db-access-time']).toLocaleString('bg-BG').replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, '$3/$2/$1,').replace(/\/(\d{1})\//, '/0$1/');
+		dom.window.document.getElementById('icecast-access-time').textContent = new Date(accessTimes['icecast-access-time']).toLocaleString('bg-BG').replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, '$3/$2/$1,').replace(/\/(\d{1})\//, '/0$1/');
+		dom.window.document.getElementById('metacast-access-time').textContent = new Date(accessTimes['metacast-access-time']).toLocaleString('bg-BG').replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, '$3/$2/$1,').replace(/\/(\d{1})\//, '/0$1/');
 
 		//if (availability['db']) dom.window.document.getElementById('db-access-time').textContent = new Date(accessTimes['db-access-time']).toLocaleString('en-GB');
 		//if (availability['icecast']) dom.window.document.getElementById('icecast-access-time').textContent = new Date(accessTimes['icecast-access-time']).toLocaleString('en-GB');
